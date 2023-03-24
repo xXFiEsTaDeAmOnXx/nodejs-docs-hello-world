@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const crypto = require('crypto');
 const pkg = require('./package.json');
+const fs = require('fs');
 
 
 // App constants
@@ -206,6 +207,28 @@ router.delete('/accounts/:user', (req, res) => {
   
     res.sendStatus(204);
   });
+
+
+
+app.get('/data',(req,res)=>{
+  fs.readFile('./test.txt','utf-8',(err,content)=>{
+      if(err) throw err;
+      res.writeHead(200)
+      res.write(content)
+      return res.end()
+  })
+
+})
+
+app.post('/data',(req,res)=>{
+  fs.writeFile('./test.txt',JSON.stringify(req.body),(err,content)=> {
+    if (err)  throw err;
+    res.writeHead(200)
+    res.write(JSON.stringify({'msg':'success'}))
+    return res.end()
+})
+}
+)
   
 // ***************************************************************************
 
